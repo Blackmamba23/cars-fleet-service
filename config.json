@@ -1,0 +1,7 @@
+{
+    "Server": {
+        "HTTPPort": 8080,
+        "JSONContentType": "application/json; charset=utf-8",
+        "Log": ""
+    }
+}
