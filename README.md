@@ -8,7 +8,7 @@ Run test:
 go test ./... -v
 
 Build for container:
-go build -o bin/cars-fleet-service main.go
+CGO_ENABLED=0 go build -ldflags '' -o cars-fleet-service main.go
 docker build -f Dockerfile -t cars-fleet-service:0.0.1 .
 
 Task: 
