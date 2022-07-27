@@ -7,5 +7,7 @@ RUN update-ca-certificates
 FROM scratch
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 EXPOSE 8080
-COPY ./bin/cars-fleet-service /
+COPY cars-fleet-service /
+COPY cars.json /
+COPY config.json /
 ENTRYPOINT ["/cars-fleet-service"]

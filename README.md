@@ -1,8 +1,11 @@
 # `Cars fleet service` 
 * This is an example service that will demonstrate how to read a json file and service the results via API endpoints, 
 
-Run:
+Run server:
 go run main.go
+
+Run test:
+go test ./... -v
 
 Build for container:
 go build -o bin/cars-fleet-service main.go

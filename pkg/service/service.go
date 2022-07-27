@@ -85,22 +85,20 @@ func authCheck(j server.JSONEndpoint) server.JSONEndpoint {
 	}
 }
 
-// JSONEndpoints is the most important method of the Service implementation. It provides a
-// listing of all endpoints available in the service with their routes and HTTP methods.
-// This method helps satisfy the server.JSONService interface.
-func (s *CarsFleetService) JSONEndpoints() map[string]map[string]server.JSONEndpoint {
-	return map[string]map[string]server.JSONEndpoint{
+// Endpoints returns the endpoints for our stream service.
+func (s *CarsFleetService) Endpoints() map[string]map[string]http.HandlerFunc {
+	return map[string]map[string]http.HandlerFunc{
 		"/cars": {
-			"GET": s.GetCarsByName,
+			"GET": server.JSONToHTTP(s.GetCarsByName).ServeHTTP,
 		},
 		"/car": {
-			"GET": s.GetCarByName,
+			"GET": server.JSONToHTTP(s.GetCarByName).ServeHTTP,
 		},
 	}
 }
 
 type (
-	// jsonResponse is a generic struct for responding with a simple JSON message.
+	// Response is a generic struct for responding with a simple JSON message.
 	jsonResponse struct {
 		Message string `json:"message"`
 	}
