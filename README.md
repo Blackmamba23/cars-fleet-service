@@ -11,6 +11,9 @@ Build for container:
 CGO_ENABLED=0 go build -ldflags '' -o cars-fleet-service main.go
 docker build -f Dockerfile -t cars-fleet-service:0.0.1 .
 
+Run server in container:
+docker run -p 8080:8080 cars-fleet-service:0.0.1
+
 Task: 
 Build and deploy a web service to return data (no create,update,delete): 
  
