@@ -8,13 +8,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	// "github.com/Blackmamba23/cars-fleet-service/internal/fleet/entities"
 	"github.com/Blackmamba23/cars-fleet-service/internal/fleet/mocks"
 	"github.com/Blackmamba23/cars-fleet-service/pkg/model"
 	"github.com/Blackmamba23/cars-fleet-service/pkg/service"
 	"github.com/NYTimes/gizmo/server"
-
-	// "github.com/Blackmamba23/cars-fleet-service/internal/fleet/utils"
 
 	"github.com/stretchr/testify/suite"
 )
@@ -25,7 +22,6 @@ type fleetHandlerSuite struct {
 	// the mocked version of the usecase
 	fleetRepo *mocks.Repository
 	// the functionalities we need to test
-	service service.CarsFleetService
 	// testing server to be used the handler
 	testingServer *httptest.Server
 }
@@ -47,7 +43,6 @@ func (s *fleetHandlerSuite) SetupSuite() {
 	// we need this to run the tests
 	s.testingServer = testingServer
 	s.fleetRepo = fleetRepo
-	s.service = *svc
 }
 
 func (s *fleetHandlerSuite) TearDownSuite() {
@@ -85,13 +80,14 @@ func (s *fleetHandlerSuite) TestGetCarByName_Positive() {
 		Status  string    `json:"status"`
 		Message string    `json:"message"`
 		Data    model.Car `json:"data"`
-	}{"Success!", "successfully fetched car", model.Car{}}
+	}{"", "", model.Car{}}
 	json.NewDecoder(response.Body).Decode(&responseBody)
 
 	// running assertions to make sure that our method does the correct thing
 	s.Equal(http.StatusOK, response.StatusCode)
-	s.Equal(responseBody.Message, "successfully fetched car")
-	s.Equal(responseBody.Data.Name, "ford mustang")
+	s.Equal("Success!", responseBody.Status)
+	s.Equal("successfully fetched car", responseBody.Message)
+	s.Equal("ford mustang", responseBody.Data.Name)
 	s.fleetRepo.AssertExpectations(s.T())
 }
 
@@ -113,11 +109,12 @@ func (s *fleetHandlerSuite) TestGetCarByName_Negative() {
 	responseBody := struct {
 		Status  string `json:"status"`
 		Message string `json:"message"`
-	}{"Validation Error", fmt.Sprintf("could not fetch car named %v", carNameVal)}
+	}{"", ""}
 	json.NewDecoder(response.Body).Decode(&responseBody)
 
 	// running assertions to make sure that our method does the correct thing
 	s.Equal(http.StatusBadRequest, response.StatusCode)
+	s.Equal("Validation Error", responseBody.Status)
 	s.Equal(responseBody.Message, fmt.Sprintf("could not fetch car named %v", carNameVal))
 	s.Equal(car.Name, "")
 	s.fleetRepo.AssertExpectations(s.T())
@@ -187,13 +184,14 @@ func (s *fleetHandlerSuite) TestGetCarsByName_Positive() {
 		Status  string      `json:"status"`
 		Message string      `json:"message"`
 		Data    []model.Car `json:"data"`
-	}{"Success!", "successfully fetched cars", []model.Car{}}
+	}{"", "", []model.Car{}}
 	json.NewDecoder(response.Body).Decode(&responseBody)
 
 	// running assertions to make sure that our method does the correct thing
 	s.Equal(http.StatusOK, response.StatusCode)
-	s.Equal(responseBody.Message, "successfully fetched cars")
-	s.Equal(len(responseBody.Data), 4)
+	s.Equal("Success!", responseBody.Status)
+	s.Equal("successfully fetched cars", responseBody.Message)
+	s.Equal(4, len(responseBody.Data))
 	s.fleetRepo.AssertExpectations(s.T())
 }
 
@@ -215,13 +213,14 @@ func (s *fleetHandlerSuite) TestGetCarsByName_Negative() {
 	responseBody := struct {
 		Status  string `json:"status"`
 		Message string `json:"message"`
-	}{"Validation Error", fmt.Sprintf("could not fetch cars with name %v", carNameVal)}
+	}{"", ""}
 	json.NewDecoder(response.Body).Decode(&responseBody)
 
 	// running assertions to make sure that our method does the correct thing
 	s.Equal(http.StatusBadRequest, response.StatusCode)
-	s.Equal(responseBody.Message, fmt.Sprintf("could not fetch cars with name %v", carNameVal))
-	s.Equal(len(cars), 0)
+	s.Equal("Validation Error", responseBody.Status)
+	s.Equal(fmt.Sprintf("could not fetch cars with name %v", carNameVal), responseBody.Message)
+	s.Equal(0, len(cars))
 	s.fleetRepo.AssertExpectations(s.T())
 }
 
