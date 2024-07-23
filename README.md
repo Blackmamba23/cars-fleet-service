@@ -14,6 +14,10 @@ docker build -f Dockerfile -t cars-fleet-service:0.0.1 .
 Run server in container:
 docker run -p 8080:8080 cars-fleet-service:0.0.1
 
+Endpoints:
+search many cars: /svc/fleet/v1/cars
+return one car: /svc/fleet/v1/car
+
 Task: 
 Build and deploy a web service to return data (no create,update,delete): 
  
