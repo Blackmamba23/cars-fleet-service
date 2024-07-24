@@ -26,8 +26,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
 	// load from the local JSON file into a config.Config struct
 	config.LoadJSONFile("./config.json", &cfg)
+
+	// NOTE: We can easily change out the server for another eg gin, echo, mux, martini
+
 	// SetConfigOverrides will allow us to override some of the values in
 	// the JSON file with CLI flags.
 	server.SetConfigOverrides(cfg.Server)
