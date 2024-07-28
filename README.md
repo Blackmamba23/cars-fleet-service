@@ -30,3 +30,6 @@ key in the json array via the web service.
 Search based APIs lend themselves to a search engine storage layer for quick retrival of data.
 
 Potential improvements could include support for multiple json files to read and maybe support for different kinds of files such as csv. These kinds of decisions depend on project reqirements, scope etc
+
+CI/CD
+trigger build 1
